@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>md5头像</title>
+        <style type="text/css">
+            body{
+                padding:50px;
+                text-align: center;
+            }
+            #header{
+                width:80px;
+                height:80px;
+                border-radius: 50%;
+                line-height: 80px;
+                text-align: center;
+                color:white;
+                font-size: 30px;
+                display: inline-block;
+                margin-top:50px;
+            }
+
+        </style>
+        <script type="text/javascript" src="./md5.js"></script>
+        <script type="text/javascript">
+
+            function AvatarMd5(str) {
+                var reg = /^[A-Za-z]+$/,
+                    name = reg.test(str) ? str.slice(0, 2) : str.slice(str.length - 2, str.length),
+                    md5_str = md5.createHash(str),
+                    first_Ele = isNaN(parseInt(md5_str.slice(0, 1)))
+                        ? md5_str.slice(0, 1).toLowerCase().charCodeAt() - 97
+                        : md5_str.slice(0, 1),
+                    map_color = ['29d4ff', '1594ff', 'ffa92f', 'b587fa', '06cf86', 'fa6771', '73d51c', '8991ff'],
+                    color = '#' + map_color[first_Ele % 8];
+
+                return {
+                    name: name,
+                    color: color
+                };
+            };
+            function makeHead(e){
+                var userName = document.getElementById("userName").value;
+                if(!userName) return;
+                var avatar = AvatarMd5(userName);
+                var headerView = document.getElementById("header");
+                headerView.innerHTML = avatar.name;
+                headerView.style = "background-color:"+avatar.color;
+            }
+        </script>
+    </head>
+    <body>
+        <input type="text" id="userName"/>
+        <button class="submit" onclick="makeHead()">生成头像</button>
+        <div class="header"><span id="header"></span></div>
+    </body>
+</html>
